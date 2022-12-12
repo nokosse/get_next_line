@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/12 19:14:22 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/12 20:29:59 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,43 @@
 	  //et donc gerer un cas ou il y a plusieurs \n dans le buffer.
 	//on retourne *line
 
+int	check_newline(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*stash;		//variable temporaire pour stocker ce qu'on lit
 	char		*buffer;	//ce qu'on va lire avec read
 	char		*line;		//ce qu'on va retourner
-	int			i;			//nb de caracteres lus
+	size_t		readed;		//nb de caracteres lus
+	size_t		i;			//nb de caracteres a supprimer dans stash
 
+	readed = BUFFER_SIZE;
 	while (read(fd, buffer, BUFFER_SIZE) != 0)
 	{
 		buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		if (!buffer)
 			return (NULL);
-		i = read(fd, buffer, BUFFER_SIZE);
+		readed += read(fd, buffer, BUFFER_SIZE);
 		stash = ft_strjoin(stash, buffer);
+		free (buffer);
+		if (check_newline(stash) == 1)
+			break ;
 	}
+	while (stash[i] != '\n' && stash[i] != '\0')
+		i++;
+	line = strndup(stash, i);
+	stash = ft_strndel(stash, i);
 }
 	
