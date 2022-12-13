@@ -6,15 +6,12 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:43:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/13 18:25:15 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/13 18:54:11 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
-
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 32
 
 # include <stdlib.h>
 # include <unistd.h>
