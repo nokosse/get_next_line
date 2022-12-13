@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/13 17:29:24 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/13 19:56:06 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,33 +86,33 @@ char	*get_next_line(int fd)
 	bytes = 1;
 	while (check_line(stash) == -1)
 	{
-		buf = malloc(sizeof(char) * BUFFER_SIZE + 1);	//// 
-		if (!buf)										  //
-			return (NULL);								  //
-		bytes = read(fd, buf, BUFFER_SIZE);				  //
+		buf = malloc(sizeof(char) * BUFFER_SIZE + 1);	//// On alloue de la memoire pour buf.
+		if (!buf)										  // 
+			return (NULL);								  // On retourne NULL si malloc a echoue.
+		bytes = read(fd, buf, BUFFER_SIZE);				  // On lit BUFFER_SIZE bytes dans le fichier.
 		if (bytes == 0)									  //
-			break;										  //
-		if (bytes == -1)								  //
-			return (NULL);								  // On a fait en sorte que buf contienne ce que read a lu dans son buffer.
+			break;										  // On sort de la boucle si on a atteint la fin du fichier.
+		if (bytes == -1)								  // 
+			return (NULL);								  // On retourne NULL si read a echoue.
 		buf[bytes] = '\0';								  // On met un \0 a la fin de buf.
 		stash = ft_strjoin(stash, buf);					  // On concatene buf et stash.
 		free(buf);										////
 	}
 
 	// CAS 1 : On a atteint la fin du fichier. Sans aucun \n dans stash. (On a qu'une ligne dans le fichier.)
-	if (check_line(stash) == -1)
-	{								// Si on a qu'une ligne dans le fichier, ou rien du tout.
+	if (bytes == 0 && check_line(stash) == -1)	// Si on a atteint la fin du fichier et qu'il n'y a pas de \n dans stash.
+	{
 		line = ft_strdup(stash);	// On copie stash dans line.
+		stash = ft_strdel(stash);	// On supprime stash.
 		return (line);				// On retourne line.
 	}
-		
+
 	// CAS 2 : Il y a un \n dans stash. Mais peut etre des trucs apres le \n.
-	line = ft_substr(stash, 0, ft_strchr(stash, '\n') - stash);	// On copie stash dans line jusqu'au \n.
+	line = ft_substr(stash, 0, ft_strchr(stash, '\n') - stash + 1);	// On copie stash dans line jusqu'au \n.
 	stash = ft_strdel(stash);									// On supprime tout ce qui est avant le \n dans stash.
-	return (line);												// On retourne line.	
+	return (line);												// On retourne line.
 }
 
-//fonction main qui affiche le fichier text.txt grace a get_next_line. prenant en argument, le nombre de ligne a afficher.
 int main(int argc, char **argv)
 {
 	int		fd;
@@ -135,4 +135,4 @@ int main(int argc, char **argv)
 	return (0);
 }
 
-//Compiler comme sa : gwww -D BUFFER_SIZE=42 *.c
+//Compiler comme sa : gwww -D BUFFER_SIZE=2 *.c
