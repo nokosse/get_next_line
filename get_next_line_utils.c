@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/13 12:44:54 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/13 14:58:45 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ char	*ft_strjoin(char *s1, char *s2)
 	int		i;
 	int		j;
 
+	if (!s1)
+	{
+		s1 = malloc(1);
+		if (!s1)
+			return (NULL);
+		s1[0] = '\0';
+	}
 	size = ft_strlen(s1) + ft_strlen(s2);
 	str = malloc(size * sizeof(char) + 1);
 	if (!str)
