@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/13 15:47:12 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/13 17:29:24 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,20 @@ char	*get_next_line(int fd)
 	char		*line;	// Variable qui contient la ligne a retourner.
 	ssize_t		bytes;	// Variable qui contient le nombre de bytes lus par read.
 
-	if (fd < 0 || BUFFER_SIZE <= 0)	//Retourne NULL si fd OU BUFFER_SIZE est invalide.
+	if (fd < 0 || BUFFER_SIZE <= 0 || bytes == -1)	//Retourne NULL si fd OU BUFFER_SIZE est invalide.
 		return (NULL);
 		
 	// Tant qu'on a pas trouver de \n dans stash et qu'on a pas atteint la fin du fichier.
 	// Au cas ou on a qu'une ligne dans le fichier.
 	bytes = 1;
-	while (check_line(stash) == -1 && bytes != 0)
+	while (check_line(stash) == -1)
 	{
 		buf = malloc(sizeof(char) * BUFFER_SIZE + 1);	//// 
 		if (!buf)										  //
 			return (NULL);								  //
 		bytes = read(fd, buf, BUFFER_SIZE);				  //
+		if (bytes == 0)									  //
+			break;										  //
 		if (bytes == -1)								  //
 			return (NULL);								  // On a fait en sorte que buf contienne ce que read a lu dans son buffer.
 		buf[bytes] = '\0';								  // On met un \0 a la fin de buf.
@@ -98,7 +100,7 @@ char	*get_next_line(int fd)
 	}
 
 	// CAS 1 : On a atteint la fin du fichier. Sans aucun \n dans stash. (On a qu'une ligne dans le fichier.)
-	if (check_line(stash) == 0)
+	if (check_line(stash) == -1)
 	{								// Si on a qu'une ligne dans le fichier, ou rien du tout.
 		line = ft_strdup(stash);	// On copie stash dans line.
 		return (line);				// On retourne line.
@@ -110,29 +112,27 @@ char	*get_next_line(int fd)
 	return (line);												// On retourne line.	
 }
 
-int main (void)
+//fonction main qui affiche le fichier text.txt grace a get_next_line. prenant en argument, le nombre de ligne a afficher.
+int main(int argc, char **argv)
 {
-	int	fd = open("text.txt", O_RDONLY);
-	
-	char *line = get_next_line(fd);
-	printf("Premiere ligne : %s\n", line);
-	
-	char *line2 = get_next_line(fd);
-	printf("Deuxieme ligne : %s\n", line2);
+	int		fd;
+	int		i;
+	char	*line;
 
-	char *line3 = get_next_line(fd);
-	printf("Troisieme ligne : %s\n", line3);
+	i = 0;
+	fd = open("text.txt", O_RDONLY);
+	if (argc == 2)
+	{
+		while (i < atoi(argv[1]))
+		{
+			line = get_next_line(fd);
+			printf("Ligne %d : %s\n", i + 1, line);
+			free(line);
+			i++;
+		}
+	}
 
-	char *line4 = get_next_line(fd);
-	printf("Quatrieme ligne : %s\n", line4);
-
-	char *line5 = get_next_line(fd);
-	printf("Cinquieme ligne : %s\n", line5);
-
-	char *line6 = get_next_line(fd);
-	printf("Sixieme ligne : %s\n", line6);
-	
-	close(fd);
 	return (0);
 }
+
 //Compiler comme sa : gwww -D BUFFER_SIZE=42 *.c
