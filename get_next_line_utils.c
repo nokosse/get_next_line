@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/12 20:28:47 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/13 12:44:54 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 size_t	ft_strlen(const char *str)
 {
-    size_t	i;
+	size_t	i;
 
-    i = 0;
-    while (str[i])
-        i++;
-    return (i);
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }
 
-char	*ft_strjoin(const char *s1, const char *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
 	size_t	size;
@@ -44,37 +44,53 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	return (str);
 }
 
-char    *ft_strndup(const char *s1, size_t n)
+char	*ft_strchr(const char *s, int c)
 {
-    char    *str;
-    size_t  i;
-
-    i = 0;
-    str = malloc(sizeof(char) * (n + 1));
-    if (!str)
-        return (NULL);
-    while (i < n)
-    {
-        str[i] = s1[i];
-        i++;
-    }
-    str[i] = '\0';
-    return (str);
+	while (*s != '\0')
+	{
+		if ((unsigned char)*s == (unsigned char)c)
+			return ((char *)s);
+		s++;
+	}
+	if (c == 0)
+		return ((char *)s);
+	return (0);
 }
 
-//delete n bytes from the start of the string
-char    *ft_strndel(char *str, size_t n)
+static int	get_len(const char *s, unsigned int start, size_t len)
 {
-    char    *new;
-    size_t  i;
+	unsigned int	cpt;
+	unsigned int	y;
 
-    i = 0;
-    new = malloc(sizeof(char) * (ft_strlen(str) - n + 1));
-    if (!new)
-        return (NULL);
-    while (str[n])
-        new[i++] = str[n++];
-    new[i] = '\0';
-    free(str);
-    return (new);
+	cpt = 0;
+	y = start + len;
+	while (start < y && s[start] != '\0')
+	{
+		start++;
+		cpt++;
+	}
+	return (cpt);
+}
+
+char	*ft_substr(const char *s, unsigned int start, size_t len)
+{
+	char	*str;
+	int		i;
+	int		y;
+
+	if (start >= ft_strlen(s))
+		start = ft_strlen(s);
+	y = get_len(s, start, len);
+	i = 0;
+	str = malloc((y) + 1);
+	if (!str || start > ft_strlen(s))
+		return (NULL);
+	while (i < y)
+	{
+		str[i] = s[start];
+		i++;
+		start++;
+	}
+	str[i] = '\0';
+	return (str);
 }
