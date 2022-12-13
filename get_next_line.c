@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/13 19:56:06 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/13 20:42:02 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static char	*ft_strdel(char *str)
 
 	i = 0;
 	j = 0;
-	while (str[i] != '\n')
+	while (str[i] != '\n' && str[i])
 		i++;
 	new = malloc(ft_strlen(str) - i + 1);
 	if (!new)
@@ -78,7 +78,7 @@ char	*get_next_line(int fd)
 	char		*line;	// Variable qui contient la ligne a retourner.
 	ssize_t		bytes;	// Variable qui contient le nombre de bytes lus par read.
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || bytes == -1)	//Retourne NULL si fd OU BUFFER_SIZE est invalide.
+	if (fd < 0 || BUFFER_SIZE <= 0)	//Retourne NULL si fd OU BUFFER_SIZE est invalide.
 		return (NULL);
 		
 	// Tant qu'on a pas trouver de \n dans stash et qu'on a pas atteint la fin du fichier.
@@ -99,11 +99,14 @@ char	*get_next_line(int fd)
 		free(buf);										////
 	}
 
+	if(!stash || stash[1] == '\0')	// Si on a atteint la fin du fichier et qu'il n'y a pas de \n dans stash.
+		return (NULL);
+
 	// CAS 1 : On a atteint la fin du fichier. Sans aucun \n dans stash. (On a qu'une ligne dans le fichier.)
 	if (bytes == 0 && check_line(stash) == -1)	// Si on a atteint la fin du fichier et qu'il n'y a pas de \n dans stash.
 	{
 		line = ft_strdup(stash);	// On copie stash dans line.
-		stash = ft_strdel(stash);	// On supprime stash.
+		stash = ft_strdel(stash);	// On supprime tout ce qui est avant le \n dans stash.
 		return (line);				// On retourne line.
 	}
 
