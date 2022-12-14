@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/13 20:42:02 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/14 19:44:03 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,16 @@ char	*get_next_line(int fd)
 		if (!buf)										  // 
 			return (NULL);								  // On retourne NULL si malloc a echoue.
 		bytes = read(fd, buf, BUFFER_SIZE);				  // On lit BUFFER_SIZE bytes dans le fichier.
+		if (bytes == 0)
+		{
+			if (stash && ft_strlen(stash) == 1)	 		  // Si on a atteint la fin du fichier et qu'il n'y a pas de \n dans stash.
+			{
+    			line = ft_strdup(stash);				  // On copie stash dans line.
+				stash = NULL;							  // On supprime tout ce qui est avant le \n dans stash.
+				return (line);							  // On retourne line.
+			}
+			break;
+		}
 		if (bytes == 0)									  //
 			break;										  // On sort de la boucle si on a atteint la fin du fichier.
 		if (bytes == -1)								  // 
@@ -107,9 +117,10 @@ char	*get_next_line(int fd)
 	{
 		line = ft_strdup(stash);	// On copie stash dans line.
 		stash = ft_strdel(stash);	// On supprime tout ce qui est avant le \n dans stash.
+		free(stash);				// On libere la memoire de stash.
 		return (line);				// On retourne line.
 	}
-
+	
 	// CAS 2 : Il y a un \n dans stash. Mais peut etre des trucs apres le \n.
 	line = ft_substr(stash, 0, ft_strchr(stash, '\n') - stash + 1);	// On copie stash dans line jusqu'au \n.
 	stash = ft_strdel(stash);									// On supprime tout ce qui est avant le \n dans stash.
