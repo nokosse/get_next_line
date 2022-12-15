@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/15 15:02:25 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/15 15:05:24 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-//fonction ft_strjoin courte
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*str;
