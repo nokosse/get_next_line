@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/15 16:29:53 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/15 17:15:44 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,14 @@ char	*ft_strjoin(char *s1, char *s2)
 
 	if (!s1)
 	{
-		s1 = malloc(1);
-		if (!s1)
+		str = malloc(ft_strlen(s2) + 1);
+		str_ptr = str;
+		if (!str)
 			return (NULL);
-		s1[0] = '\0';
+		while (*s2)
+			*str_ptr++ = *s2++;
+		*str_ptr = '\0';
+		return (str);
 	}
 	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	str_ptr = str;
