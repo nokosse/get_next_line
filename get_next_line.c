@@ -6,31 +6,13 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/14 19:44:03 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/15 14:42:25 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
 //Prototype de read : ssize_t read(int fd, void *buf, size_t count);
-
-char	*ft_strdup(const char *s)
-{
-	char	*dup;
-	int		i;
-
-	i = 0;
-	dup = malloc(ft_strlen(s) + 1);
-	if (!dup)
-		return (NULL);
-	while (s[i])
-	{
-		dup[i] = s[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
-}
 
 //Fonction qui verifie si la string en parametre contient un \n.
 int	check_line(char *str)
@@ -54,19 +36,12 @@ static char	*ft_strdel(char *str)
 {
 	char	*new;
 	int		i;
-	int		j;
 
 	i = 0;
-	j = 0;
 	while (str[i] != '\n' && str[i])
 		i++;
-	new = malloc(ft_strlen(str) - i + 1);
-	if (!new)
-		return (NULL);
 	i++;
-	while (str[i])
-		new[j++] = str[i++];
-	new[j] = '\0';
+	new = ft_strdup(str + i);
 	free(str);
 	return (new);
 }
@@ -96,14 +71,23 @@ char	*get_next_line(int fd)
 			{
     			line = ft_strdup(stash);				  // On copie stash dans line.
 				stash = NULL;							  // On supprime tout ce qui est avant le \n dans stash.
+				free(stash);
+				free(buf);								  // On libere la memoire allouee a buf.
 				return (line);							  // On retourne line.
 			}
+			free(buf);									  // On libere la memoire allouee a buf.
 			break;
 		}
 		if (bytes == 0)									  //
+		{
+			free(buf);									  // On libere la memoire allouee a buf.
 			break;										  // On sort de la boucle si on a atteint la fin du fichier.
+		}
 		if (bytes == -1)								  // 
+		{
+			free(buf);									  // On libere la memoire allouee a buf.
 			return (NULL);								  // On retourne NULL si read a echoue.
+		}
 		buf[bytes] = '\0';								  // On met un \0 a la fin de buf.
 		stash = ft_strjoin(stash, buf);					  // On concatene buf et stash.
 		free(buf);										////
