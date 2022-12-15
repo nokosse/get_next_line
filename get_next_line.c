@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/15 14:42:25 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:32:59 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 //Prototype de read : ssize_t read(int fd, void *buf, size_t count);
 
 //Fonction qui verifie si la string en parametre contient un \n.
-int	check_line(char *str)
+static int	check_line(char *str)
 {
 	int	i;
 
@@ -70,7 +70,6 @@ char	*get_next_line(int fd)
 			if (stash && ft_strlen(stash) == 1)	 		  // Si on a atteint la fin du fichier et qu'il n'y a pas de \n dans stash.
 			{
     			line = ft_strdup(stash);				  // On copie stash dans line.
-				stash = NULL;							  // On supprime tout ce qui est avant le \n dans stash.
 				free(stash);
 				free(buf);								  // On libere la memoire allouee a buf.
 				return (line);							  // On retourne line.
