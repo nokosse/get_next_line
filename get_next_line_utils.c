@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/15 15:05:24 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/15 16:29:53 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ char	*ft_strjoin(char *s1, char *s2)
 	while (*s2)
 		*str_ptr++ = *s2++;
 	*str_ptr = '\0';
-	free(s1);
 	return (str);
 }
 
