@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:43:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/13 18:54:11 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/16 13:33:33 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # include <string.h>
 # include <stdint.h>
 # include <fcntl.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
 
 char	*get_next_line(int fd);
 size_t	ft_strlen(const char *str);
