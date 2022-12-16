@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/16 13:56:21 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/16 17:24:42 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*ft_strjoin(const char *s1, const char *s2)
 {
 	char	*str;
 	char	*str_ptr;
@@ -87,3 +87,21 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
+
+// char	*ft_strdup(const char *s)
+// {
+// 	char	*dup;
+// 	int		i;
+
+// 	i = 0;
+// 	dup = malloc(ft_strlen(s) + 1);
+// 	if (!dup)
+// 		return (NULL);
+// 	while (s[i])
+// 	{
+// 		dup[i] = s[i];
+// 		i++;
+// 	}
+// 	dup[i] = '\0';
+// 	return (dup);
+// }
