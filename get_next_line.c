@@ -6,15 +6,17 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/16 13:16:16 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/16 19:06:32 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-//Prototype de read : ssize_t read(int fd, void *buf, size_t count);
+/*
+	check_line is juste a boolean that returns 1 if our string contains a \n.
+	Else it returns -1.
+*/
 
-//Fonction qui verifie si la string en parametre contient un \n.
 static int	check_line(char *str)
 {
 	int	i;
@@ -25,13 +27,19 @@ static int	check_line(char *str)
 	while (str[i])
 	{
 		if (str[i] == '\n')
-			return (i);
+			return (1);
 		i++;
 	}
 	return (-1);
 }
 
-//Fonction qui supprime tout ce qui est avant le \n dans la string en parametre.
+/*
+	ft_strcut is used in one case in GNL.
+	When the stash contains a \n, we are cutting the string
+	from the \n to the end of the string, so our new stash does not
+	longer contain the \n ans the past line.
+*/
+
 static char	*ft_strcut(char *str)
 {
 	char	*cutted_str;
@@ -53,6 +61,11 @@ static char	*ft_strcut(char *str)
 	return (cutted_str);
 }
 
+/*
+	GNL is the main function of the project.
+	How it simply works : WIP
+*/
+
 char	*get_next_line(int fd)
 {
 	static char *stash;	//Variable statique contenant le resultat de la concatenation de lui meme et du buffer.
@@ -60,34 +73,39 @@ char	*get_next_line(int fd)
 	char		*line;	//Variable contenant la ligne a retourner.
 	int			readed;	//Variable contenant le nombre de caracteres lus par read.
 
+	if (fd < 0 || BUFFER_SIZE <= 0) //Gestion input invalides.
+		return (NULL);
+
 	//On lis une fois avant la boucle pour initialiser les variables.
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (NULL);
-		
+
 	readed = read(fd, buff, BUFFER_SIZE); //Juste pour initialiser readed.
 	
-	//On check si read a lu quelque chose, retourne null si il n'y a rien a lire.
+	//Tout lu et stash vide
 	if (readed <= 0 && !stash)
 		return (NULL);
 
 	buff[readed] = '\0'; //On ajoute le \0 a la fin du buffer.
 	stash = ft_strjoin(stash, buff); //On concatene le buffer a la variable statique.
-	free(buff); //Plus besoin de buff pour le reste de la boucle.
+	free(buff);
 
-	//On rentre dans le cas ou on a forcement lu quelque chose lors de l'appel a get_next_line.
-	while (readed > 0 || stash) 	//Tant qu'on a pas atteint la fin du fichier.
+	//Va sortir de la boucle quand le stash sera vide
+	while (stash)
 	{
+		//Sa lis
 		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-		readed = read(fd, buff, BUFFER_SIZE); //On lit le fichier.
-		buff[readed] = '\0'; //On ajoute le \0 a la fin du buffer.
-		stash = ft_strjoin(stash, buff); //On concatene le buffer a la variable statique.
-		free(buff); //Plus besoin de buff pour le reste de la boucle.
-		
+		readed = read(fd, buff, BUFFER_SIZE);
+		buff[readed] = '\0';
+		stash = ft_strjoin(stash, buff);
+		free(buff);
+
 		//CAS 1 : Derniere ligne, pas de \n, read a lu moins que BUFFER_SIZE.
 		if (readed < BUFFER_SIZE && check_line(stash) == -1)
 		{
-			line = stash;
+			line = ft_substr(stash, 0, ft_strlen(stash)); //Comme strdup mais on utilise ft_substr
+			free(stash);
 			stash = NULL;
 			return (line);
 		}
@@ -119,8 +137,5 @@ int main(int argc, char **argv)
 			i++;
 		}
 	}
-
 	return (0);
 }
-
-//Compiler comme sa : gwww -D BUFFER_SIZE=2 *.c
