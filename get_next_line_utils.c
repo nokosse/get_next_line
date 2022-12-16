@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/16 17:24:42 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/16 19:01:47 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,13 @@ size_t	ft_strlen(const char *str)
 		i++;
 	return (i);
 }
+
+/*
+	ft_strjoin that works exactly like libft's ft_strjoin.
+	But it uses pointers instead of indexes.
+	Speciality of this one : if s1 is NULL, it will return str
+	which is a malloc of s2. (Which is the buffer of GNL)
+*/
 
 char	*ft_strjoin(const char *s1, const char *s2)
 {
@@ -50,6 +57,11 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	return (str);
 }
 
+/*
+	ft_strchr is used to find the \n and is used only
+	as a parameter for ft_substr. (it's size_t len)
+*/
+
 char	*ft_strchr(const char *s, int c)
 {
 	while (*s != '\0')
@@ -62,6 +74,12 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s);
 	return (0);
 }
+
+/*
+	ft_substr is used to get the line from the stash in GNL.
+	In case 1 : Last line, it is doing a strdup of the stash.
+	In case 2 : Not last line, it is strduping from start to \n.
+*/
 
 char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
