@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/16 19:06:32 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/16 19:29:44 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,12 @@ static char	*ft_strcut(char *str)
 
 /*
 	GNL is the main function of the project.
-	How it simply works : WIP
+	How it simply works : We read the file and store the result in a buffer.
+	Then we concatenate the buffer to the stash.
+	Then we check if the stash contains a \n.
+	If it does, we cut the stash from the \n to the end of the string.
+	Then we return the line.
+	Else we return NULL.
 */
 
 char	*get_next_line(int fd)
@@ -76,19 +81,19 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0) //Gestion input invalides.
 		return (NULL);
 
-	//On lis une fois avant la boucle pour initialiser les variables.
+	//On lis une fois avant la boucle pour initialiser les variables 
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (NULL);
 
-	readed = read(fd, buff, BUFFER_SIZE); //Juste pour initialiser readed.
+	readed = read(fd, buff, BUFFER_SIZE);
 	
-	//Tout lu et stash vide
+	//Tout lu et stash vide : retourne null.
 	if (readed <= 0 && !stash)
 		return (NULL);
 
-	buff[readed] = '\0'; //On ajoute le \0 a la fin du buffer.
-	stash = ft_strjoin(stash, buff); //On concatene le buffer a la variable statique.
+	buff[readed] = '\0';
+	stash = ft_strjoin(stash, buff);
 	free(buff);
 
 	//Va sortir de la boucle quand le stash sera vide
