@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/16 19:01:47 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/20 12:04:38 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,28 +32,22 @@ size_t	ft_strlen(const char *str)
 char	*ft_strjoin(const char *s1, const char *s2)
 {
 	char	*str;
-	char	*str_ptr;
+	size_t	size;
+	int		i;
+	int		j;
 
-	if (!s1)
-	{
-		str = malloc(ft_strlen(s2) + 1);
-		str_ptr = str;
-		if (!str)
-			return (NULL);
-		while (*s2)
-			*str_ptr++ = *s2++;
-		*str_ptr = '\0';
-		return (str);
-	}
-	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	str_ptr = str;
+	size = ft_strlen(s1) + ft_strlen(s2);
+	str = malloc(size * sizeof(char) + 1);
 	if (!str)
 		return (NULL);
-	while (*s1)
-		*str_ptr++ = *s1++;
-	while (*s2)
-		*str_ptr++ = *s2++;
-	*str_ptr = '\0';
+	i = 0;
+	j = 0;
+	while (s1[i])
+		str[j++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		str[j++] = s2[i++];
+	str[j] = '\0';
 	return (str);
 }
 
@@ -106,20 +100,26 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	return (str);
 }
 
-// char	*ft_strdup(const char *s)
-// {
-// 	char	*dup;
-// 	int		i;
+/*
+	ft_strdup is used to duplicate the buffer of read in stash
+	in case of stash is NULL.
+	stash become the content of the buffer and is \0 terminated.
+*/
 
-// 	i = 0;
-// 	dup = malloc(ft_strlen(s) + 1);
-// 	if (!dup)
-// 		return (NULL);
-// 	while (s[i])
-// 	{
-// 		dup[i] = s[i];
-// 		i++;
-// 	}
-// 	dup[i] = '\0';
-// 	return (dup);
-// }
+char	*ft_strdup(const char *s)
+{
+	char	*dup;
+	int		i;
+
+	i = 0;
+	dup = malloc(ft_strlen(s) + 1);
+	if (!dup)
+		return (NULL);
+	while (s[i])
+	{
+		dup[i] = s[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
