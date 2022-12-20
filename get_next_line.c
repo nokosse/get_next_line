@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/20 19:16:05 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/20 19:58:26 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,7 @@ int main(int argc, char **argv)
 	char	*line;
 
 	int i = 0;
-	int fd = open("text.txt", O_RDONLY);
+	int fd = open("gnlTester/files/41_no_nl", O_RDONLY);
 	if (argc == 2)
 	{
 		while (i < atoi(argv[1]))
@@ -148,4 +148,24 @@ int main(int argc, char **argv)
 	return (0);
 }
 
-//gwww -g -D BUFFER_SIZE=5 *.c && leaks ./a.out 5
+/*
+
+Path to Tripouille test files :
+
+gnlTester/files/nl
+gnlTester/files/41_no_nl
+gnlTester/files/41_with_nl
+gnlTester/files/42_no_nl
+gnlTester/files/42_with_nl
+gnlTester/files/43_no_nl
+gnlTester/files/43_with_nl
+gnlTester/files/alternate_line_nl_no_nl
+gnlTester/files/alternate_line_nl_with_nl
+gnlTester/files/big_line_no_nl
+gnlTester/files/big_line_with_nl
+gnlTester/files/empty
+gnlTester/files/multiple_lines_no_nl
+gnlTester/files/multiple_lines_with_nl
+gnlTester/files/multiple_nlx5
+
+*/
