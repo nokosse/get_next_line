@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/20 12:07:28 by kvisouth         ###   ########.fr       */
+/*   Created: 2022/12/20 14:05:52 by kvisouth          #+#    #+#             */
+/*   Updated: 2022/12/20 19:06:47 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ size_t	ft_strlen(const char *str)
 
 /*
 	ft_strjoin that works exactly like libft's ft_strjoin.
+	It concatenates s2 to s1 in a new string (str).
 	It is used in GNL to concatenate the stash and the buffer.
 */
 
@@ -35,7 +36,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	int		j;
 
 	size = ft_strlen(s1) + ft_strlen(s2);
-	str = malloc(size * sizeof(char) + 1);
+	str = malloc(sizeof(char) * (size + 1));
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -46,6 +47,7 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	while (s2[i])
 		str[j++] = s2[i++];
 	str[j] = '\0';
+	free((char *)s1); //ajout free
 	return (str);
 }
 

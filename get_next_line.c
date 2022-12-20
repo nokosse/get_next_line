@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/20 12:03:11 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/20 19:16:05 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,24 +73,27 @@ static char	*ft_strcut(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char *stash;	//Variable statique contenant le resultat de la concatenation de lui meme et du buffer.
-	char		*buff;	//Variable contenant le buffer de lecture. (read)
-	char		*line;	//Variable contenant la ligne a retourner.
-	int			readed;	//Variable contenant le nombre de caracteres lus par read.
+	static char *stash;	//Static variable that contains the result of concatenation of buffer and stash.
+	char		*buff;	//Variable that contains the result of read in a buffer.
+	char		*line;	//Variable that contains the line to return.
+	int			readed;	//Variable that contains the result of read.
 
-	if (fd < 0 || BUFFER_SIZE <= 0) //Gestion input invalides.
+	if (fd < 0 || BUFFER_SIZE <= 0) //Invalid inputs handling.
 		return (NULL);
 
-	//On lis une fois avant la boucle pour initialiser les variables 
+	//Init varaibles
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (NULL);
 
 	readed = read(fd, buff, BUFFER_SIZE);
 	
-	//Tout lu et stash vide : retourne null.
+	//If all the file readed OR error while reading AND stash is empty : return NULL.
 	if (readed <= 0 && !stash)
+	{
+		free(buff);
 		return (NULL);
+	}
 
 	buff[readed] = '\0';
 	if (!stash)
@@ -99,25 +102,23 @@ char	*get_next_line(int fd)
 		stash = ft_strjoin(stash, buff);
 	free(buff);
 
-	//Va sortir de la boucle quand le stash sera vide
 	while (stash)
 	{
-		//Sa lis et sa concatene buffer a stash.
 		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		readed = read(fd, buff, BUFFER_SIZE);
 		buff[readed] = '\0';
 		stash = ft_strjoin(stash, buff);
 		free(buff);
 
-		//CAS 1 : Derniere ligne, pas de \n, read a lu moins que BUFFER_SIZE.
+		//CASE 1 : Last line, no \n in stash. Read does not read BUFFER_SIZE but less.
 		if (readed < BUFFER_SIZE && check_line(stash) == -1)
 		{
-			line = ft_substr(stash, 0, ft_strlen(stash)); //Comme strdup mais on utilise ft_substr
+			line = ft_strdup(stash);
 			free(stash);
 			stash = NULL;
 			return (line);
 		}
-		//CAS 2 : Pas derniere ligne, il y a un \n dans stash. Read lit forcement BUFFER_SIZE.
+		//CASE 2 : Not the last line, \n in stash.
 		else if (check_line(stash) != -1)
 		{
 			line = ft_substr(stash, 0, ft_strchr(stash, '\n') - stash + 1);
@@ -125,7 +126,6 @@ char	*get_next_line(int fd)
 			return (line);
 		}
 	}
-	//Retourne null si on sort de la boucle (donc qu'on a forcement readed <= 0)
 	return (NULL);
 }
 
@@ -147,3 +147,5 @@ int main(int argc, char **argv)
 	}
 	return (0);
 }
+
+//gwww -g -D BUFFER_SIZE=5 *.c && leaks ./a.out 5
