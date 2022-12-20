@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/20 19:58:26 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/20 20:03:09 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static char	*ft_strcut(char *str)
 	char	*cutted_str;
 	int		i;
 	int		j;
-	
+
 	i = 0;
 	j = 0;
 	while (str[i] != '\n')
@@ -73,35 +73,28 @@ static char	*ft_strcut(char *str)
 
 char	*get_next_line(int fd)
 {
-	static char *stash;	//Static variable that contains the result of concatenation of buffer and stash.
-	char		*buff;	//Variable that contains the result of read in a buffer.
-	char		*line;	//Variable that contains the line to return.
-	int			readed;	//Variable that contains the result of read.
+	static char	*stash;
+	char		*buff;
+	char		*line;
+	int			readed;
 
-	if (fd < 0 || BUFFER_SIZE <= 0) //Invalid inputs handling.
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-
-	//Init varaibles
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 	if (!buff)
 		return (NULL);
-
 	readed = read(fd, buff, BUFFER_SIZE);
-	
-	//If all the file readed OR error while reading AND stash is empty : return NULL.
 	if (readed <= 0 && !stash)
 	{
 		free(buff);
 		return (NULL);
 	}
-
 	buff[readed] = '\0';
 	if (!stash)
 		stash = ft_strdup(buff);
 	else
 		stash = ft_strjoin(stash, buff);
 	free(buff);
-
 	while (stash)
 	{
 		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -109,8 +102,6 @@ char	*get_next_line(int fd)
 		buff[readed] = '\0';
 		stash = ft_strjoin(stash, buff);
 		free(buff);
-
-		//CASE 1 : Last line, no \n in stash. Read does not read BUFFER_SIZE but less.
 		if (readed < BUFFER_SIZE && check_line(stash) == -1)
 		{
 			line = ft_strdup(stash);
@@ -118,7 +109,6 @@ char	*get_next_line(int fd)
 			stash = NULL;
 			return (line);
 		}
-		//CASE 2 : Not the last line, \n in stash.
 		else if (check_line(stash) != -1)
 		{
 			line = ft_substr(stash, 0, ft_strchr(stash, '\n') - stash + 1);
