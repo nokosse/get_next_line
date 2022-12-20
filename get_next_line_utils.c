@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 19:11:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/20 12:04:38 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/20 12:07:28 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,7 @@ size_t	ft_strlen(const char *str)
 
 /*
 	ft_strjoin that works exactly like libft's ft_strjoin.
-	But it uses pointers instead of indexes.
-	Speciality of this one : if s1 is NULL, it will return str
-	which is a malloc of s2. (Which is the buffer of GNL)
+	It is used in GNL to concatenate the stash and the buffer.
 */
 
 char	*ft_strjoin(const char *s1, const char *s2)
