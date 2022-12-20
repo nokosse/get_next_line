@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/16 19:29:44 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/20 12:03:11 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,16 @@ char	*get_next_line(int fd)
 		return (NULL);
 
 	buff[readed] = '\0';
-	stash = ft_strjoin(stash, buff);
+	if (!stash)
+		stash = ft_strdup(buff);
+	else
+		stash = ft_strjoin(stash, buff);
 	free(buff);
 
 	//Va sortir de la boucle quand le stash sera vide
 	while (stash)
 	{
-		//Sa lis
+		//Sa lis et sa concatene buffer a stash.
 		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		readed = read(fd, buff, BUFFER_SIZE);
 		buff[readed] = '\0';
