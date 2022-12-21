@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 14:05:52 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/21 11:37:45 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/21 12:08:38 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,31 +103,4 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	}
 	str[i] = '\0';
 	return (str);
-}
-
-/*
-	ft_strdup is used to duplicate the buffer of read in stash
-	in case of stash is NULL.
-	stash become the content of the buffer and is \0 terminated.
-
-	If I wanted to use less functions, I could use ft_substr to replace
-	ft_strdup, by passing the start at 0 and the len at ft_strlen(s).
-*/
-
-char	*ft_strdup(const char *s)
-{
-	char	*dup;
-	int		i;
-
-	i = 0;
-	dup = malloc(ft_strlen(s) + 1);
-	if (!dup)
-		return (NULL);
-	while (s[i])
-	{
-		dup[i] = s[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
 }
