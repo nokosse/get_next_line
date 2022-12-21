@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/20 20:03:09 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/21 13:27:07 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			readed;
 
+	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -91,10 +92,16 @@ char	*get_next_line(int fd)
 	}
 	buff[readed] = '\0';
 	if (!stash)
-		stash = ft_strdup(buff);
+		stash = ft_substr(buff, 0, ft_strlen(buff));
 	else
 		stash = ft_strjoin(stash, buff);
 	free(buff);
+	if (stash[0] == '\0')
+	{
+		free(stash);
+		stash = NULL;
+		return (NULL);
+	}
 	while (stash)
 	{
 		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -104,7 +111,7 @@ char	*get_next_line(int fd)
 		free(buff);
 		if (readed < BUFFER_SIZE && check_line(stash) == -1)
 		{
-			line = ft_strdup(stash);
+			line = ft_substr(stash, 0, ft_strlen(stash));
 			free(stash);
 			stash = NULL;
 			return (line);
@@ -124,7 +131,7 @@ int main(int argc, char **argv)
 	char	*line;
 
 	int i = 0;
-	int fd = open("gnlTester/files/41_no_nl", O_RDONLY);
+	int fd = open("gnlTester/files/42_with_nl", O_RDONLY);
 	if (argc == 2)
 	{
 		while (i < atoi(argv[1]))
@@ -154,8 +161,8 @@ gnlTester/files/alternate_line_nl_with_nl
 gnlTester/files/big_line_no_nl
 gnlTester/files/big_line_with_nl
 gnlTester/files/empty
-gnlTester/files/multiple_lines_no_nl
-gnlTester/files/multiple_lines_with_nl
+gnlTester/files/multiple_line_no_nl
+gnlTester/files/multiple_line_with_nl
 gnlTester/files/multiple_nlx5
 
 */
