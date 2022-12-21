@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 14:05:52 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/21 17:54:49 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/21 17:56:03 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	longer contain the \n ans the past line.
 */
 
-char	*ft_GNL_strcut(char *str)
+char	*ft_gnl_strcut(char *str)
 {
 	char	*cutted_str;
 	int		i;
