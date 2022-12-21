@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/21 13:27:07 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:31:26 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,16 +61,6 @@ static char	*ft_strcut(char *str)
 	return (cutted_str);
 }
 
-/*
-	GNL is the main function of the project.
-	How it simply works : We read the file and store the result in a buffer.
-	Then we concatenate the buffer to the stash.
-	Then we check if the stash contains a \n.
-	If it does, we cut the stash from the \n to the end of the string.
-	Then we return the line.
-	Else we return NULL.
-*/
-
 char	*get_next_line(int fd)
 {
 	static char	*stash;
@@ -78,7 +68,6 @@ char	*get_next_line(int fd)
 	char		*line;
 	int			readed;
 
-	
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -131,7 +120,7 @@ int main(int argc, char **argv)
 	char	*line;
 
 	int i = 0;
-	int fd = open("gnlTester/files/42_with_nl", O_RDONLY);
+	int fd = open("gnlTester/files/multiple_line_with_nl", O_RDONLY);
 	if (argc == 2)
 	{
 		while (i < atoi(argv[1]))
