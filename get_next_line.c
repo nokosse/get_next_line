@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/21 14:31:26 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/21 14:58:33 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,14 @@ static char	*ft_strcut(char *str)
 	return (cutted_str);
 }
 
-char	*get_next_line(int fd)
-{
-	static char	*stash;
-	char		*buff;
-	char		*line;
-	int			readed;
+/*
+	I used this function to make GNL less than 25 lines.
+	This function is checking the validity of fd, BUFFER_SIZE and the stash.
+	And it's initializing our stash for the rest of GNL if the verification passed.
+*/
 
+static char	*stash_checking(int fd, char *stash, char *buff, int readed)
+{
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
@@ -91,6 +92,19 @@ char	*get_next_line(int fd)
 		stash = NULL;
 		return (NULL);
 	}
+	return (stash);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*stash;
+	char		*buff;
+	char		*line;
+	int			readed;
+
+	readed = 0;
+	buff = NULL;
+	stash = stash_checking(fd, stash, buff, readed);
 	while (stash)
 	{
 		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
