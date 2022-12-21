@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/21 14:58:33 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/21 20:28:37 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,35 +34,8 @@ static int	check_line(char *str)
 }
 
 /*
-	ft_strcut is used in one case in GNL.
-	When the stash contains a \n, we are cutting the string
-	from the \n to the end of the string, so our new stash does not
-	longer contain the \n ans the past line.
-*/
-
-static char	*ft_strcut(char *str)
-{
-	char	*cutted_str;
-	int		i;
-	int		j;
-
-	i = 0;
-	j = 0;
-	while (str[i] != '\n')
-		i++;
-	cutted_str = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
-	if (!cutted_str)
-		return (NULL);
-	i++;
-	while (str[i])
-		cutted_str[j++] = str[i++];
-	cutted_str[j] = '\0';
-	free(str);
-	return (cutted_str);
-}
-
-/*
 	I used this function to make GNL less than 25 lines.
+	This block of code was between the variable declaration and the while loop.
 	This function is checking the validity of fd, BUFFER_SIZE and the stash.
 	And it's initializing our stash for the rest of GNL if the verification passed.
 */
@@ -122,31 +95,31 @@ char	*get_next_line(int fd)
 		else if (check_line(stash) != -1)
 		{
 			line = ft_substr(stash, 0, ft_strchr(stash, '\n') - stash + 1);
-			stash = ft_strcut(stash);
+			stash = ft_gnl_strcut(stash);
 			return (line);
 		}
 	}
 	return (NULL);
 }
 
-int main(int argc, char **argv)
-{
-	char	*line;
+// int main(int argc, char **argv)
+// {
+// 	char	*line;
 
-	int i = 0;
-	int fd = open("gnlTester/files/multiple_line_with_nl", O_RDONLY);
-	if (argc == 2)
-	{
-		while (i < atoi(argv[1]))
-		{
-			line = get_next_line(fd);
-			printf("Ligne %d : %s\n", i + 1, line);
-			free(line);
-			i++;
-		}
-	}
-	return (0);
-}
+// 	int i = 0;
+// 	int fd = open("text.txt", O_RDONLY);
+// 	if (argc == 2)
+// 	{
+// 		while (i < atoi(argv[1]))
+// 		{
+// 			line = get_next_line(fd);
+// 			printf("Ligne %d : %s\n", i + 1, line);
+// 			free(line);
+// 			i++;
+// 		}
+// 	}
+// 	return (0);
+// }
 
 /*
 
