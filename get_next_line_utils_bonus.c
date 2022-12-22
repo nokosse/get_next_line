@@ -6,14 +6,14 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 14:05:52 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/22 14:00:49 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/22 18:42:47 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
 /*
-	It's the exacy same function as ft_strlen from libft.
+	Nothing different from the original get_next_line_utils.c
 */
 
 size_t	ft_strlen(const char *str)
@@ -25,13 +25,6 @@ size_t	ft_strlen(const char *str)
 		i++;
 	return (i);
 }
-
-/*
-	ft_strjoin that works exactly like libft's ft_strjoin.
-	The only difference is that it frees s1.
-	It concatenates s2 to s1 in a new string (str).
-	It is used in GNL to concatenate the stash and the buffer.
-*/
 
 char	*ft_strjoin(const char *s1, const char *s2)
 {
@@ -56,11 +49,6 @@ char	*ft_strjoin(const char *s1, const char *s2)
 	return (str);
 }
 
-/*
-	ft_strchr is used to find the \n and is used only
-	as a parameter for ft_substr. (it's size_t len)
-*/
-
 char	*ft_strchr(const char *s, int c)
 {
 	while (*s != '\0')
@@ -73,12 +61,6 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)s);
 	return (0);
 }
-
-/*
-	ft_substr is used to get the line from the stash in GNL.
-	In case 1 : Last line, it is doing a strdup of the stash.
-	In case 2 : Not last line, it is strduping from start to \n.
-*/
 
 char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
@@ -104,13 +86,6 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-
-/*
-	ft_strcut is used in one case in GNL.
-	When the stash contains a \n, we are cutting the string
-	from the \n to the end of the string, so our new stash does not
-	longer contain the \n ans the past line.
-*/
 
 char	*ft_gnl_strcut(char *str)
 {

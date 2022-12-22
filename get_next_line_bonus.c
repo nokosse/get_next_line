@@ -6,17 +6,11 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/22 14:02:51 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/22 18:42:16 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-
-/*
-	This function handles the errors of the read function.
-	It returns 0 if there is an error.
-	Else it returns 1.
-*/
 
 static int	read_errors_handling(int readed, char *buff)
 {
@@ -27,11 +21,6 @@ static int	read_errors_handling(int readed, char *buff)
 	}
 	return (1);
 }
-
-/*
-	check_line is juste a boolean that returns 1 if our string contains a \n.
-	Else it returns -1.
-*/
 
 static int	check_line(char *str)
 {
@@ -48,13 +37,6 @@ static int	check_line(char *str)
 	}
 	return (-1);
 }
-
-/*
-	I used this function to make GNL less than 25 lines.
-	This block of code was between the variable declaration and the while loop.
-	This function is checking the validity of fd, BUFFER_SIZE and the stash.
-	And it's initializing our stash for the rest of GNL if the verification passed.
-*/
 
 static char	*stash_checking(int fd, char *stash, char *buff, int readed)
 {
@@ -84,16 +66,6 @@ static char	*stash_checking(int fd, char *stash, char *buff, int readed)
 	return (stash);
 }
 
-/*
-	I also used this function to make GNL less than 25 lines.
-	This bllock of code was replaced by the 3 last lines in the while loop.
-	This function is handling the 2 cases of GNL.
-	1. The last line case.
-	2. The line with a \n case.
-	It's parameter is **stash and not *stash because of we need to modify the
-	original stash, and not a copy of it. It's called a : Pass by reference in C.
-*/
-
 char	*cases_handing(char **stash, int readed)
 {
 	char	*line;
@@ -115,23 +87,22 @@ char	*cases_handing(char **stash, int readed)
 }
 
 /*
-	GNL is a function that reads a file line by line.
-	We read the file until we find a \n or the end of the file.
-	And we return the line we just read.
-	It returns NULL if there is nothing to read.
+	GNL with bonus.
+	I added [1024] to *stash (1024 is the max number of files that can be open)
+	In GNL, I added [fd] to every *stash so it works on the proper file.
 */
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[1024];
 	char		*buff;
 	char		*line;
 	int			readed;
 
 	readed = 0;
 	buff = NULL;
-	stash = stash_checking(fd, stash, buff, readed);
-	while (stash)
+	stash[fd] = stash_checking(fd, stash[fd], buff, readed);
+	while (stash[fd])
 	{
 		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		if (!buff)
@@ -140,52 +111,33 @@ char	*get_next_line(int fd)
 		if (read_errors_handling(readed, buff) == 0)
 			return (NULL);
 		buff[readed] = '\0';
-		stash = ft_strjoin(stash, buff);
+		stash[fd] = ft_strjoin(stash[fd], buff);
 		free(buff);
-		line = cases_handing(&stash, readed);
+		line = cases_handing(&stash[fd], readed);
 		if (line)
 			return (line);
 	}
 	return (NULL);
 }
 
-// int main(int argc, char **argv)
+// int main (void)
 // {
-// 	char	*line;
+// 	int fd;
+// 	int fd1;
+// 	char *str;
+// 	char *str1;
 
-// 	int i = 0;
-// 	int fd = open("text.txt", O_RDONLY);
-// 	if (argc == 2)
+// 	fd = open("test1", O_RDONLY);
+// 	fd1 = open("test2", O_RDONLY);
+// 	str = get_next_line(fd);
+// 	str1 = get_next_line(fd1);
+// 	while (str != NULL)
 // 	{
-// 		while (i < atoi(argv[1]))
-// 		{
-// 			line = get_next_line(fd);
-// 			printf("Ligne %d : %s\n", i + 1, line);
-// 			free(line);
-// 			i++;
-// 		}
+// 		printf("%s", str);
+// 		free(str);
+// 		str = get_next_line(fd);
+// 		printf("%s", str1);
+// 		free(str1);
+// 		str1 = get_next_line(fd1);
 // 	}
-// 	return (0);
 // }
-
-/*
-
-Path to Tripouille test files :
-
-gnlTester/files/nl
-gnlTester/files/41_no_nl
-gnlTester/files/41_with_nl
-gnlTester/files/42_no_nl
-gnlTester/files/42_with_nl
-gnlTester/files/43_no_nl
-gnlTester/files/43_with_nl
-gnlTester/files/alternate_line_nl_no_nl
-gnlTester/files/alternate_line_nl_with_nl
-gnlTester/files/big_line_no_nl
-gnlTester/files/big_line_with_nl
-gnlTester/files/empty
-gnlTester/files/multiple_line_no_nl
-gnlTester/files/multiple_line_with_nl
-gnlTester/files/multiple_nlx5
-
-*/
