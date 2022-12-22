@@ -6,11 +6,27 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/22 12:44:31 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/22 13:56:17 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+/*
+	This function handles the errors of the read function.
+	It returns 0 if there is an error.
+	Else it returns 1.
+*/
+
+static int	read_errors_handling(int readed, char *buff)
+{
+	if (readed == -1)
+	{
+		free(buff);
+		return (0);
+	}
+	return (1);
+}
 
 /*
 	check_line is juste a boolean that returns 1 if our string contains a \n.
@@ -118,7 +134,11 @@ char	*get_next_line(int fd)
 	while (stash)
 	{
 		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		if (!buff)
+			return (NULL);
 		readed = read(fd, buff, BUFFER_SIZE);
+		if (read_errors_handling(readed, buff) == 0)
+			return (NULL);
 		buff[readed] = '\0';
 		stash = ft_strjoin(stash, buff);
 		free(buff);
