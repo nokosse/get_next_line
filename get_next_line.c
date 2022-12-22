@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/21 20:28:37 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/22 12:44:31 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,43 @@ static char	*stash_checking(int fd, char *stash, char *buff, int readed)
 	return (stash);
 }
 
+/*
+	I also used this function to make GNL less than 25 lines.
+	This bllock of code was replaced by the 3 last lines in the while loop.
+	This function is handling the 2 cases of GNL.
+	1. The last line case.
+	2. The line with a \n case.
+	It's parameter is **stash and not *stash because of we need to modify the
+	original stash, and not a copy of it. It's called a : Pass by reference in C.
+*/
+
+char	*cases_handing(char **stash, int readed)
+{
+	char	*line;
+
+	if (readed < BUFFER_SIZE && check_line(*stash) == -1)
+	{
+		line = ft_substr(*stash, 0, ft_strlen(*stash));
+		free(*stash);
+		*stash = NULL;
+		return (line);
+	}
+	else if (check_line(*stash) != -1)
+	{
+		line = ft_substr(*stash, 0, ft_strchr(*stash, '\n') - *stash + 1);
+		*stash = ft_gnl_strcut(*stash);
+		return (line);
+	}
+	return (NULL);
+}
+
+/*
+	GNL is a function that reads a file line by line.
+	We read the file until we find a \n or the end of the file.
+	And we return the line we just read.
+	It returns NULL if there is nothing to read.
+*/
+
 char	*get_next_line(int fd)
 {
 	static char	*stash;
@@ -85,19 +122,9 @@ char	*get_next_line(int fd)
 		buff[readed] = '\0';
 		stash = ft_strjoin(stash, buff);
 		free(buff);
-		if (readed < BUFFER_SIZE && check_line(stash) == -1)
-		{
-			line = ft_substr(stash, 0, ft_strlen(stash));
-			free(stash);
-			stash = NULL;
+		line = cases_handing(&stash, readed);
+		if (line)
 			return (line);
-		}
-		else if (check_line(stash) != -1)
-		{
-			line = ft_substr(stash, 0, ft_strchr(stash, '\n') - stash + 1);
-			stash = ft_gnl_strcut(stash);
-			return (line);
-		}
 	}
 	return (NULL);
 }
