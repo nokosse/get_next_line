@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/22 14:02:43 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/26 14:50:21 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,19 +119,20 @@ char	*cases_handing(char **stash, int readed)
 	We read the file until we find a \n or the end of the file.
 	And we return the line we just read.
 	It returns NULL if there is nothing to read.
+	I added bonus here as well.
 */
 
 char	*get_next_line(int fd)
 {
-	static char	*stash;
+	static char	*stash[1024];
 	char		*buff;
 	char		*line;
 	int			readed;
 
 	readed = 0;
 	buff = NULL;
-	stash = stash_checking(fd, stash, buff, readed);
-	while (stash)
+	stash[fd] = stash_checking(fd, stash[fd], buff, readed);
+	while (stash[fd])
 	{
 		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
 		if (!buff)
@@ -140,9 +141,9 @@ char	*get_next_line(int fd)
 		if (read_errors_handling(readed, buff) == 0)
 			return (NULL);
 		buff[readed] = '\0';
-		stash = ft_strjoin(stash, buff);
+		stash[fd] = ft_strjoin(stash[fd], buff);
 		free(buff);
-		line = cases_handing(&stash, readed);
+		line = cases_handing(&stash[fd], readed);
 		if (line)
 			return (line);
 	}

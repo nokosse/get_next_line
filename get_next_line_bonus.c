@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/22 18:42:16 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/26 14:47:11 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ char	*cases_handing(char **stash, int readed)
 	GNL with bonus.
 	I added [1024] to *stash (1024 is the max number of files that can be open)
 	In GNL, I added [fd] to every *stash so it works on the proper file.
+	Because I need the same amout of different *stash as the max number of files.
 */
 
 char	*get_next_line(int fd)
