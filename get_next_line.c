@@ -6,27 +6,11 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/26 14:50:21 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/26 19:40:07 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-/*
-	This function handles the errors of the read function.
-	It returns 0 if there is an error.
-	Else it returns 1.
-*/
-
-static int	read_errors_handling(int readed, char *buff)
-{
-	if (readed == -1)
-	{
-		free(buff);
-		return (0);
-	}
-	return (1);
-}
 
 /*
 	check_line is juste a boolean that returns 1 if our string contains a \n.
@@ -131,6 +115,8 @@ char	*get_next_line(int fd)
 
 	readed = 0;
 	buff = NULL;
+	if (fd > 1024)
+		return (NULL);
 	stash[fd] = stash_checking(fd, stash[fd], buff, readed);
 	while (stash[fd])
 	{
@@ -138,14 +124,13 @@ char	*get_next_line(int fd)
 		if (!buff)
 			return (NULL);
 		readed = read(fd, buff, BUFFER_SIZE);
-		if (read_errors_handling(readed, buff) == 0)
-			return (NULL);
+		if (readed == -1)
+			return (free(buff), NULL);
 		buff[readed] = '\0';
 		stash[fd] = ft_strjoin(stash[fd], buff);
 		free(buff);
 		line = cases_handing(&stash[fd], readed);
-		if (line)
-			return (line);
+		return (line);
 	}
 	return (NULL);
 }
