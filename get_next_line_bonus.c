@@ -6,21 +6,11 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/26 19:40:43 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/27 18:09:18 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-
-static int	read_errors_handling(int readed, char *buff)
-{
-	if (readed == -1)
-	{
-		free(buff);
-		return (0);
-	}
-	return (1);
-}
 
 static int	check_line(char *str)
 {
@@ -47,10 +37,7 @@ static char	*stash_checking(int fd, char *stash, char *buff, int readed)
 		return (NULL);
 	readed = read(fd, buff, BUFFER_SIZE);
 	if (readed <= 0 && !stash)
-	{
-		free(buff);
-		return (NULL);
-	}
+		return (free(buff), NULL);
 	buff[readed] = '\0';
 	if (!stash)
 		stash = ft_substr(buff, 0, ft_strlen(buff));
