@@ -6,11 +6,39 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/26 19:40:07 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/28 15:53:08 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+/*
+	ft_strcut is used in one case in GNL.
+	When the stash contains a \n, we are cutting the string
+	from the \n to the end of the string, so our new stash does not
+	longer contain the \n ans the past line.
+*/
+
+static char	*ft_strcut(char *str)
+{
+	char	*cutted_str;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (str[i] != '\n')
+		i++;
+	cutted_str = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
+	if (!cutted_str)
+		return (NULL);
+	i++;
+	while (str[i])
+		cutted_str[j++] = str[i++];
+	cutted_str[j] = '\0';
+	free(str);
+	return (cutted_str);
+}
 
 /*
 	check_line is juste a boolean that returns 1 if our string contains a \n.
@@ -92,7 +120,7 @@ char	*cases_handing(char **stash, int readed)
 	else if (check_line(*stash) != -1)
 	{
 		line = ft_substr(*stash, 0, ft_strchr(*stash, '\n') - *stash + 1);
-		*stash = ft_gnl_strcut(*stash);
+		*stash = ft_strcut(*stash);
 		return (line);
 	}
 	return (NULL);
@@ -120,17 +148,17 @@ char	*get_next_line(int fd)
 	stash[fd] = stash_checking(fd, stash[fd], buff, readed);
 	while (stash[fd])
 	{
-		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		buff = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 		if (!buff)
 			return (NULL);
 		readed = read(fd, buff, BUFFER_SIZE);
 		if (readed == -1)
 			return (free(buff), NULL);
-		buff[readed] = '\0';
 		stash[fd] = ft_strjoin(stash[fd], buff);
 		free(buff);
 		line = cases_handing(&stash[fd], readed);
-		return (line);
+		if (line)
+			return (line);
 	}
 	return (NULL);
 }
@@ -140,7 +168,7 @@ char	*get_next_line(int fd)
 // 	char	*line;
 
 // 	int i = 0;
-// 	int fd = open("text.txt", O_RDONLY);
+// 	int fd = open("gnlTester/files/alternate_line_nl_no_nl", O_RDONLY);
 // 	if (argc == 2)
 // 	{
 // 		while (i < atoi(argv[1]))
@@ -155,6 +183,7 @@ char	*get_next_line(int fd)
 // }
 
 /*
+gcc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c
 
 Path to Tripouille test files :
 

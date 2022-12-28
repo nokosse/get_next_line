@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/12 10:43:17 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/22 18:40:40 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/28 15:16:49 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ size_t	ft_strlen(const char *str);
 char	*ft_strjoin(const char *s1, const char *s2);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
-char	*ft_strdup(const char *s);
-char	*ft_gnl_strcut(char *str);
+void	*ft_calloc(size_t nmemb, size_t size);
 
 #endif

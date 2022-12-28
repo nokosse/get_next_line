@@ -6,11 +6,32 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 19:26:38 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/27 18:09:18 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/28 15:30:50 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+
+static char	*ft_strcut(char *str)
+{
+	char	*cutted_str;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	while (str[i] != '\n')
+		i++;
+	cutted_str = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
+	if (!cutted_str)
+		return (NULL);
+	i++;
+	while (str[i])
+		cutted_str[j++] = str[i++];
+	cutted_str[j] = '\0';
+	free(str);
+	return (cutted_str);
+}
 
 static int	check_line(char *str)
 {
@@ -67,7 +88,7 @@ char	*cases_handing(char **stash, int readed)
 	else if (check_line(*stash) != -1)
 	{
 		line = ft_substr(*stash, 0, ft_strchr(*stash, '\n') - *stash + 1);
-		*stash = ft_gnl_strcut(*stash);
+		*stash = ft_strcut(*stash);
 		return (line);
 	}
 	return (NULL);
@@ -94,17 +115,17 @@ char	*get_next_line(int fd)
 	stash[fd] = stash_checking(fd, stash[fd], buff, readed);
 	while (stash[fd])
 	{
-		buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+		buff = ft_calloc(sizeof(char), BUFFER_SIZE + 1);
 		if (!buff)
 			return (NULL);
 		readed = read(fd, buff, BUFFER_SIZE);
 		if (readed == -1)
 			return (free(buff), NULL);
-		buff[readed] = '\0';
 		stash[fd] = ft_strjoin(stash[fd], buff);
 		free(buff);
 		line = cases_handing(&stash[fd], readed);
-		return (line);
+		if (line)
+			return (line);
 	}
 	return (NULL);
 }

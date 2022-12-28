@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 14:05:52 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/22 18:42:47 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/28 15:31:58 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,23 +87,25 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	return (str);
 }
 
-char	*ft_gnl_strcut(char *str)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*cutted_str;
+	void	*p;
+	int		len;
 	int		i;
-	int		j;
+	char	*str;
 
-	i = 0;
-	j = 0;
-	while (str[i] != '\n')
-		i++;
-	cutted_str = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
-	if (!cutted_str)
+	if (size && SIZE_MAX / size < nmemb)
 		return (NULL);
-	i++;
-	while (str[i])
-		cutted_str[j++] = str[i++];
-	cutted_str[j] = '\0';
-	free(str);
-	return (cutted_str);
+	len = nmemb * size;
+	p = malloc(len);
+	if (!p)
+		return (NULL);
+	i = 0;
+	str = p;
+	while (i < len)
+	{
+		str[i] = '\0';
+		i++;
+	}
+	return (p);
 }

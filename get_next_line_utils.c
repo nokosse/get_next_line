@@ -6,7 +6,7 @@
 /*   By: kvisouth <kvisouth@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 14:05:52 by kvisouth          #+#    #+#             */
-/*   Updated: 2022/12/21 19:16:01 by kvisouth         ###   ########.fr       */
+/*   Updated: 2022/12/28 15:32:10 by kvisouth         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,30 +105,25 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	return (str);
 }
 
-/*
-	ft_strcut is used in one case in GNL.
-	When the stash contains a \n, we are cutting the string
-	from the \n to the end of the string, so our new stash does not
-	longer contain the \n ans the past line.
-*/
-
-char	*ft_gnl_strcut(char *str)
+void	*ft_calloc(size_t nmemb, size_t size)
 {
-	char	*cutted_str;
+	void	*p;
+	int		len;
 	int		i;
-	int		j;
+	char	*str;
 
-	i = 0;
-	j = 0;
-	while (str[i] != '\n')
-		i++;
-	cutted_str = malloc(sizeof(char) * (ft_strlen(str) - i + 1));
-	if (!cutted_str)
+	if (size && SIZE_MAX / size < nmemb)
 		return (NULL);
-	i++;
-	while (str[i])
-		cutted_str[j++] = str[i++];
-	cutted_str[j] = '\0';
-	free(str);
-	return (cutted_str);
+	len = nmemb * size;
+	p = malloc(len);
+	if (!p)
+		return (NULL);
+	i = 0;
+	str = p;
+	while (i < len)
+	{
+		str[i] = '\0';
+		i++;
+	}
+	return (p);
 }
